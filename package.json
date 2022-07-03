@@ -4,10 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"type": "module",
-	"exports": "./dist/src/index.js",
+	"exports": "./dist/index.js",
 	"scripts": {
 		"build": "tsc",
-		"start": "node dist/src/index.js",
+		"start": "node dist/index.js",
 		"dev": "npx tsc-watch --onsuccess 'npm start'",
 		"test": "jest"
 	},
