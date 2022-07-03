@@ -1,9 +1,10 @@
 import fetch from "node-fetch";
-import Config from "../Config/Config.js";
+
 import { FailedRequest } from "../Errors/FailedReqest.js";
 import { Outage, IOutageDAO } from "../Entities/Outage.js";
 import { ISiteDao, Site } from "../Entities/Site.js";
 import { Device } from "../Entities/Device.js";
+import { Config } from "../Config/Config.js";
 
 export default class DataAccess {
 	private async makeFetchRequest(route: string, data: any) {
@@ -17,18 +18,18 @@ export default class DataAccess {
 	}
 
 	async getOutages(): Promise<Outage[]> {
-		const data = (await this.makeFetchRequest(Config.routes.outages, {
+		const data = (await this.makeFetchRequest(await (await Config()).routes.outages, {
 			method: "GET",
-			headers: { "x-api-key": Config.apiKey },
+			headers: { "x-api-key": await (await Config()).apiKey },
 		})) as IOutageDAO[];
 
 		return data.map((item) => new Outage(item.id, item.begin, item.end));
 	}
 
 	async getSiteById(siteId: string) {
-		const data = (await this.makeFetchRequest(`${Config.routes.siteInfo}/${siteId}`, {
+		const data = (await this.makeFetchRequest(`${await (await Config()).routes.siteInfo}/${siteId}`, {
 			method: "GET",
-			headers: { "x-api-key": Config.apiKey },
+			headers: { "x-api-key": await (await Config()).apiKey },
 		})) as ISiteDao;
 
 		return new Site(
@@ -39,10 +40,10 @@ export default class DataAccess {
 	}
 
 	async PostFilteredOutagesBySiteId(siteId: string, outages: { id: string; begin: string; end: string; name: string }[]): Promise<boolean> {
-		await this.makeFetchRequest(`${Config.routes.siteOutages}/${siteId}`, {
+		await this.makeFetchRequest(`${await (await Config()).routes.siteOutages}/${siteId}`, {
 			method: "POST",
 			body: JSON.stringify(outages),
-			headers: { "x-api-key": Config.apiKey },
+			headers: { "x-api-key": await (await Config()).apiKey },
 		});
 
 		return true;
