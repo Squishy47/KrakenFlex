@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"module": "Node16",
+		"moduleResolution": "Node16",
+		"outDir": "dist",
+		"sourceMap": true,
+		"strict": true,
+		"target": "es2017",
+		"esModuleInterop": true
+	},
+	"compileOnSave": true,
+	"include": ["src/**/*.ts", "tests/*.ts"],
+	"types": ["jest", "node"]
+}
