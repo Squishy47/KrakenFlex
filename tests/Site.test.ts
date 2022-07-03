@@ -9,16 +9,11 @@ describe("Sites", () => {
 	const outage2 = new Outage("1233", "2022-01-03T01:00:00.000Z", "2022-01-04T01:01:00.000Z");
 
 	test("Get List Of Outages", () => {
-		const listOfOutages = [
-			new Outage("123", "2022-01-02T01:00:00.000Z", "2022-01-03T01:01:00.000Z"),
-			new Outage("123", "2022-01-03T01:00:00.000Z", "2022-01-04T01:01:00.000Z"),
-		];
-
-		site.setDeviceOutages(listOfOutages);
-
+		site.devices[0].outages = [outage1];
 		const outages = site.getListOfOutages();
+		const expectedOutput = [{ id: outage1.deviceId, begin: outage1.begin?.toISOString(), end: outage1.end?.toISOString(), name: "battery1" }];
 
-		expect(outages).toMatchObject(listOfOutages.map((outage) => ({ ...outage, name: "battery1" })));
+		expect(outages).toMatchObject(expectedOutput);
 	});
 
 	test("Setting Devices corrently filters", () => {
